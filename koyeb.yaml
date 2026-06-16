@@ -1,0 +1,31 @@
+name: odoo-crm-mcp
+services:
+  - name: odoo-crm-mcp
+    type: web
+    git:
+      repository: github.com/lchampz/odoo-mcp
+      branch: main
+    build:
+      dockerfile: Dockerfile
+    run:
+      command: odoo-crm-mcp --transport streamable-http --host 0.0.0.0 --port 8000
+    ports:
+      - port: 8000
+        protocol: http
+    env:
+      - key: ODOO_URL
+        value: ""
+      - key: ODOO_DATABASE
+        value: ""
+      - key: ODOO_USERNAME
+        value: ""
+      - key: ODOO_PASSWORD
+        value: ""
+    health_checks:
+      - grace_period: 10
+        interval: 30
+        restart_limit: 3
+        path: /health
+        port: 8000
+        protocol: http
+        timeout: 5

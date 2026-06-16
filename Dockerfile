@@ -17,4 +17,5 @@ ENV ODOO_PASSWORD=""
 
 EXPOSE 8000
 
-CMD ["odoo-crm-mcp", "--transport", "streamable-http", "--host", "0.0.0.0", "--port", "8000"]
+# PORT env var injected by Koyeb/Render/Fly — falls back to 8000
+CMD odoo-crm-mcp --transport streamable-http --host 0.0.0.0 --port ${PORT:-8000}

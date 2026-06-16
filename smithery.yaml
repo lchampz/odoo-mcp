@@ -1,0 +1,64 @@
+# Smithery MCP Registry configuration
+# https://smithery.ai/docs/config
+name: odoo-crm-mcp
+displayName: "Odoo CRM"
+description: >
+  Full-featured MCP server for Odoo CRM. Manage leads, opportunities, pipeline stages,
+  sales teams, activities, contacts, tags, and analytics — all via AI.
+  Works with Claude, Cursor, Windsurf, and any MCP-compatible client.
+version: "0.1.0"
+license: MIT
+homepage: https://github.com/yourusername/odoo-crm-mcp
+categories:
+  - crm
+  - sales
+  - productivity
+tags:
+  - odoo
+  - crm
+  - sales
+  - pipeline
+  - leads
+  - opportunities
+
+runtime: python
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - odooUrl
+      - odooDatabase
+      - odooUsername
+      - odooPassword
+    properties:
+      odooUrl:
+        type: string
+        title: "Odoo URL"
+        description: "Base URL of your Odoo instance (e.g. https://mycompany.odoo.com)"
+        examples:
+          - "https://mycompany.odoo.com"
+      odooDatabase:
+        type: string
+        title: "Database Name"
+        description: "Odoo database name (usually the subdomain without .odoo.com)"
+      odooUsername:
+        type: string
+        title: "Username / Email"
+        description: "Your Odoo login email"
+      odooPassword:
+        type: string
+        title: "Password or API Key"
+        description: "Odoo password or API key (Settings → Technical → API Keys)"
+        secret: true
+  commandFunction: |-
+    (config) => ({
+      command: "uvx",
+      args: ["odoo-crm-mcp"],
+      env: {
+        ODOO_URL: config.odooUrl,
+        ODOO_DATABASE: config.odooDatabase,
+        ODOO_USERNAME: config.odooUsername,
+        ODOO_PASSWORD: config.odooPassword,
+      },
+    })
